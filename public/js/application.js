@@ -2,15 +2,7 @@ var survey;
 
 $(document).ready(function() {
 
-  $("input[name='surveyName']").on("blur", function() {
-    if($(this).val() == "") {
-      $(this).parent().parent().addClass("has-error");
-      $("#error").html("Please enter a survey name").show();
-    }
-  });
-
-  var addData = function(dataType, dataNum, selector){
-    var input = selector.parent().parent().find("input"); // grab the relative input
+  var addData = function(dataType, dataNum, input){
     if (dataType == "question") {
       survey.addQuestion(input.val());
     }
@@ -30,21 +22,26 @@ $(document).ready(function() {
         }
       });
     }
-    selector.hide();
 
     // logging for clarification
     console.log(input.attr('name') + " Saved:");
     console.log(survey);
     console.log("");
-  };
+  };  
 
-  // click event handler scaled to all buttons
-  $("button").on("click", function(event) {
-    var t = $(this),
-        type = t.data('type'),
-        num = t.data('num');
-
-    addData(type, num, t);
+  // blur event handler scaled to all inputs
+  $("input").on("blur", function() {
+    var input = $(this);
+    
+    if(input.val() == "") {
+      input.parent().parent().addClass("has-error");
+      $("#error").html("Please enter text for the field highlighted below").show();
+    }
+    else {
+      var dataType = input.data('type'),
+          dataNum = input.data('num');
+      addData(dataType, dataNum, input);
+    }
   });
 
 }); // end doc.ready
