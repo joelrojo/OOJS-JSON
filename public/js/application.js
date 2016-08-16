@@ -18,24 +18,29 @@ $(document).ready(function() {
     console.log(survey);
   });
 
-  $("button[name='saveQuestion1']").on("click", function(event) {
-    survey.addQuestion($("input[name='questionText1']").val());
+
+  var addQuestion = function(questionNumber){
+    survey.addQuestion($("input[name='questionText" + questionNumber + "']").val());
     $(this).hide();
-    console.log("Question 1 Saved:");
+    console.log("Question " + questionNumber + " Saved:");
     console.log(survey);
+  };
+
+  $("button[name='saveQuestion1']").on("click", function(event) {
+    addQuestion(1);
   });
+
+  $("button[name='saveQuestion2']").on("click", function(event) {
+    addQuestion(2);
+  });
+
+
+  
 
   $("button[name='saveAnswer1']").on("click", function(event) {
     survey.addAnswerToQuestion(0, $("input[name='answerText1']").val());
     $(this).hide();
     console.log("Answer 1 Saved:");
-    console.log(survey);
-  });
-
-  $("button[name='saveQuestion2']").on("click", function(event) {
-    survey.addQuestion($("input[name='questionText2']").val());
-    $(this).hide();
-    console.log("Question 2 Saved:");
     console.log(survey);
   });
 
