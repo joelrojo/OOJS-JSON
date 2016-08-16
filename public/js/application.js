@@ -8,11 +8,6 @@ $(document).ready(function() {
       $("#error").html("Please enter a survey name").show();
     }
   });
-  
-  $("button[name='saveSurvey']").on("click", function(event) {
-    survey = new Survey($("input[name='surveyName']").val());
-    $(this).hide();
-  });
 
   var addData = function(dataType, dataNum, selector){
     var input = selector.parent().parent().find("input"); // grab the relative input
@@ -22,33 +17,34 @@ $(document).ready(function() {
     if (dataType == "answer") {
       survey.addAnswerToQuestion(dataNum-1, input.val());
     }
+    if (dataType == "survey") {
+      survey = new Survey(input.val());
+    }
+    if (dataType == "done") {
+      $.ajax({
+        method: "POST",
+        url: "/result",
+        data: JSON.stringify(survey),
+        done: function(response){
+          console.log("done!")
+        }
+      });
+    }
+    selector.hide();
+
+    // logging for clarification
     console.log(input.attr('name') + " Saved:");
     console.log(survey);
     console.log("");
   };
 
-
+  // click event handler scaled to all buttons
   $("button").on("click", function(event) {
     var t = $(this),
         type = t.data('type'),
         num = t.data('num');
-    addData(type, num, t);
-  });
-  
-  $("button[name='done']").on("click", function(event) {
-    console.log("Survey submitted:");
-    console.log(survey);
-    console.log("Survey JSON stringify:");
-    console.log(JSON.stringify(survey));
 
-    $.ajax({
-      method: "POST",
-      url: "/result",
-      data: JSON.stringify(survey),
-      done: function(response){
-        console.log("done!")
-      }
-    });
+    addData(type, num, t);
   });
 
 }); // end doc.ready
