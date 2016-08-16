@@ -1,8 +1,6 @@
 var survey;
 
 $(document).ready(function() {
-  console.log("Document ready:");
-  console.log(survey);
 
   $("input[name='surveyName']").on("blur", function() {
     if($(this).val() == "") {
@@ -14,45 +12,27 @@ $(document).ready(function() {
   $("button[name='saveSurvey']").on("click", function(event) {
     survey = new Survey($("input[name='surveyName']").val());
     $(this).hide();
-    console.log("Survey Saved:");
-    console.log(survey);
   });
 
-  
-
-
-  var addQuestion = function(questionNumber){
-    survey.addQuestion($("input[name='questionText" + questionNumber + "']").val());
-    $(this).hide();
-    console.log("Question " + questionNumber + " Saved:");
+  var addData = function(dataType, dataNum, selector){
+    var input = selector.parent().parent().find("input"); // grab the relative input
+    if (dataType == "question") {
+      survey.addQuestion(input.val());
+    }
+    if (dataType == "answer") {
+      survey.addAnswerToQuestion(dataNum-1, input.val());
+    }
+    console.log(input.attr('name') + " Saved:");
     console.log(survey);
+    console.log("");
   };
 
-  $("button.question-button").on("click", function(event) {
-    var num = $(this).data('num'); //data-num
-    addQuestion(num); 
-  });
 
-
-  $("button[name='saveAnswer1']").on("click", function(event) {
-    survey.addAnswerToQuestion(0, $("input[name='answerText1']").val());
-    $(this).hide();
-    console.log("Answer 1 Saved:");
-    console.log(survey);
-  });
-
-  $("button[name='saveAnswer2']").on("click", function(event) {
-    survey.addAnswerToQuestion(1, $("input[name='answerText2']").val());
-    $(this).hide();
-    console.log("Answer 2 Saved:");
-    console.log(survey);
-  });
-  
-  $("button[name='saveAnswer2b']").on("click", function(event) {
-    survey.addAnswerToQuestion(1, $("input[name='answerText2b']").val());
-    $(this).hide();
-    console.log("Answer 2b Saved:");
-    console.log(survey);
+  $("button").on("click", function(event) {
+    var t = $(this),
+        type = t.data('type'),
+        num = t.data('num');
+    addData(type, num, t);
   });
   
   $("button[name='done']").on("click", function(event) {
