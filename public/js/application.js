@@ -18,6 +18,8 @@ $(document).ready(function() {
     console.log(survey);
   });
 
+  
+
 
   var addQuestion = function(questionNumber){
     survey.addQuestion($("input[name='questionText" + questionNumber + "']").val());
@@ -26,16 +28,11 @@ $(document).ready(function() {
     console.log(survey);
   };
 
-  $("button[name='saveQuestion1']").on("click", function(event) {
-    addQuestion(1);
+  $("button.question-button").on("click", function(event) {
+    var num = $(this).data('num'); //data-num
+    addQuestion(num); 
   });
 
-  $("button[name='saveQuestion2']").on("click", function(event) {
-    addQuestion(2);
-  });
-
-
-  
 
   $("button[name='saveAnswer1']").on("click", function(event) {
     survey.addAnswerToQuestion(0, $("input[name='answerText1']").val());
