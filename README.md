@@ -1,4 +1,5 @@
 # OOJS + JSON
+Basic example of leveraging JS objects for processing a form with JSON. Using Sinatra for the backend.
 
 ## Learning Competencies
 - Creating JS objects 
